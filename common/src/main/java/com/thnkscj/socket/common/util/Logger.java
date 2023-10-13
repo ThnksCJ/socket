@@ -1,0 +1,34 @@
+package com.thnkscj.socket.common.util;
+
+public class Logger {
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private final String name;
+    private final boolean debug = true;
+
+    public static Logger getLogger(String name) {
+        return new Logger(name);
+    }
+
+    private Logger(String name) {
+        this.name = name;
+    }
+
+    public void info(String message) {
+        System.out.println("[" + name + "] [INFO] " + message);
+    }
+
+    public void warn(String message) {
+        System.out.println(ANSI_YELLOW + "[" + name + "] [WARN] " + message + ANSI_RESET);
+    }
+
+    public void error(String message) {
+        System.out.println(ANSI_RED + "[" + name + "] [ERROR] " + message + ANSI_RESET);
+    }
+
+    public void debug(String message) {
+        if (!debug) return;
+        System.out.println("[" + name + "] [DEBUG] " + message);
+    }
+}

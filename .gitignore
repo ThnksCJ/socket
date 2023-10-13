@@ -1,0 +1,11 @@
+# Project exclude paths
+/.gradle/
+/.idea/
+
+# Project exclude paths
+/client/build/
+/client/build/classes/java/main/
+/common/build/
+/common/build/classes/java/main/
+/server/build/
+/server/build/classes/java/main/

@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'com.thnkscj.socket'
+version '1.0.0'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation(group: 'io.fastjson', name: 'boon', version: '0.34')
+    implementation 'com.github.Cuubicc:Esys:6bcfb97669'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+}

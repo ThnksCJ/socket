@@ -224,70 +224,7 @@ public class ListenerTest {
     }
 }
 ```
- 
-# The Sound API
-
-### The API
-
-#### Audio Context
-The `AudioContext` might just be the most important class of them all. This class initializes
-the sound system, retries the default audio device and creates the context. The `init` method
-is essential for the sound system to be able to operate. Thus, this method should be called at the
-start of the program before you require sound. The `uninit` method uninitialized and must be
-called after no more sound is required.
-
-#### Sound Buffer
-A `SoundBuffer` contains the raw audio data for Open AL. In here the frequency (sample rate) and the format
-of the audio is stored.
-
-#### Audio Source
-An `AudioSource` is created of a `SoundBuffer`. This will be Open AL's operating base. Information
-about position, gain and much more is stored in here and can be changed at runtime.
-
-#### Audio Attributes
-This class controls attributes of the underlying `AudioSource`. As already mentioned, an audio source
-holds information about the music. This class controls this information. This means, you can get and
-set information from here.
-
-#### Audio Clip
-An `AudioClip` ties it all together. This interface provides an `AudioSource` and an instance
-of `AudioAttributes` to that audio source. Most importantly, the underlying music can be played,
-stopped and discarded from here. 
-
-### Audio Capturing
-
-You can capture audio from `AudioCapture`. The capture methods of this return either a SoundBuffer
-or an AudioSource. In case you don't want to play the audio but just want it to be sent it to the server,
-(yes I am talking to you cj) you should use the method that returns a `SoundBuffer`.
-
-### Examples
-
-#### Audio Capture and Play
-
-```java
-public class AudioCaptureAndPlay {
-    
-    private static final int TIME_SECONDS = 5;
-    
-    public void start(){
-        AudioCapture audioCapture = new AudioCapture(AUDIO_CONTEXT);
-        SoundBuffer soundBuffer = audioCapture.capture(TIME_SECONDS);
-        AudioSource audioSource = new AudioSource(soundBuffer);
-        AudioClip audioClip = new SoundClip(AUDIO_CONTEXT, audioSource);
-        System.out.println("Starting playback");
-        audioClip.play();
-        Thread.sleep(TIME_SECONDS * 1000);
-        audioClip.stop();
-        System.out.println("Stopped playback");
-        // we cannot use that clip again after calling this method
-        
-        // audioClip.discard(); // this will discard the audio clip, currently not working.
-        // System.out.println("Discarded clip");
-    }
-}
-```
 
 ## Contributors
 
 * **Thnks_CJ** - [GitHub Profile](https://github.com/ThnksCJ)
-* **Cubic** - [GitHub Profile](https://github.com/Cuubicc)

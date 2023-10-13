@@ -1,24 +1,34 @@
 package com.thnkscj.socket.common;
 
-import com.thnkscj.socket.common.packet.PacketRegistry;
-
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Manage the connection between the client and the server.
+ */
 public abstract class Connection {
+    /**
+     * The connection UUID.
+     */
     private final AtomicReference<UUID> connectionUUID = new AtomicReference<>(UUID.randomUUID());
-    private final PacketRegistry packetRegistry = new PacketRegistry();
 
+    /**
+     * Get the connection UUID.
+     *
+     * @return The connection UUID.
+     */
     public AtomicReference<UUID> getConnectionUUID() {
         return this.connectionUUID;
     }
 
-    public PacketRegistry getPacketRegistry() {
-        return this.packetRegistry;
-    }
-
+    /**
+     * Called when the connection is needed to be established.
+     */
     public abstract void connect() throws IOException;
 
+    /**
+     * Called when the connection is needed to be closed.
+     */
     public abstract void disconnect() throws IOException;
 }

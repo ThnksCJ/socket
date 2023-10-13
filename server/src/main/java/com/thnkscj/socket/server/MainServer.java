@@ -15,15 +15,10 @@ import java.util.Arrays;
 
 public class MainServer {
     private static Server server;
-    public static Server getServer() {
-        return server;
-    }
-
 
     public static void main(String[] args) throws IOException {
         ServerEventBus.EVENT_BUS.subscribe(MainServer.class);
 
-        // this must be exactly the same as on the client
         PacketRegistry.registerPackets(Arrays.asList(
                 CPacketDisconnect.class,
 
@@ -45,11 +40,11 @@ public class MainServer {
 
     @Subscribe
     public static void onClientDisconnect(EventClientDisconnect event) {
-        System.out.println("[VCS] Client disconnected: " + event.getClient().getConnectionUUID().get());
+        server.LOGGER.info("Client disconnected: " + event.getClient().getConnectionUUID().get());
     }
 
     @Subscribe
     public static void onClientConnect(EventClientConnect event) {
-        System.out.println("[VCS] Client connected: " + event.getClient().getConnectionUUID().get());
+        server.LOGGER.info("Client connected: " + event.getClient().getConnectionUUID().get());
     }
 }

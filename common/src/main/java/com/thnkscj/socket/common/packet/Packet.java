@@ -6,9 +6,26 @@ import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
 import java.util.UUID;
 
+/**
+ * The packet is used to exchange data between the client and the server
+ **/
 public abstract class Packet {
+
+    /**
+     * The connectionUUID is used to identify the connection that is sending the packet
+     */
     private final UUID connectionUUID;
+
+    /**
+     * The logger is used to log information about the packet
+     */
     public final Logger LOGGER = Logger.getLogger(Packet.class.getSimpleName() + "/" + this.getClass().getSimpleName());
+
+    /**
+     * The constructor is used to create a new packet
+     *
+     * @param connectionUUID is used to identify the connection between the client and the server
+     **/
 
     public Packet(final UUID connectionUUID) {
         this.connectionUUID = connectionUUID;

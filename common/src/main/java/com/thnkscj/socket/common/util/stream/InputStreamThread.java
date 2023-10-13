@@ -19,18 +19,56 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * This class is used to read the input stream of a socket.
+ * Handles:
+ * - receiving packets
+ * - posting  vents
+ *
+ * @author Thnks_CJ
+ */
 public class InputStreamThread {
+
+    /**
+     * The bytes that are read from the input stream.
+     */
     final AtomicReference<byte[]> bytes = new AtomicReference<>(null);
+
+    /**
+     * The client that is connected to the socket.
+     */
     private final Client client;
+
+    /**
+     * The underlying socket
+     */
     private final Socket socket;
+
+    /**
+     * The timer that handles the reading of packets
+     */
     private final Timer timer = new Timer();
+
+    /**
+     * The input stream
+     */
     private InputStream finalInputStream;
 
+    /**
+     * Creates a new input stream thread
+     *
+     * @param client The client that is connected to the socket
+     */
     public InputStreamThread(final Client client) {
         this.client = client;
         this.socket = this.client.getSocket();
     }
 
+    /**
+     * Starts the input stream thread
+     *
+     * @throws IOException if an I/O error occurs when creating the input stream
+     */
     public void run() throws IOException {
         this.finalInputStream = this.socket.getInputStream();
 
@@ -104,6 +142,9 @@ public class InputStreamThread {
         }, 0, 1);
     }
 
+    /**
+     * Stops the thread
+     */
     public void interrupt() {
         try {
             this.finalInputStream.close();

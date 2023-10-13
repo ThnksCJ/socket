@@ -6,16 +6,15 @@ import com.thnkscj.socket.common.event.common.EventClientConnect;
 import com.thnkscj.socket.common.event.client.EventServerDisconnect;
 import com.thnkscj.socket.common.event.common.EventPacket;
 import com.thnkscj.socket.client.packets.client.*;
-import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
-import com.thnkscj.socket.common.util.Logger;
 import org.cubic.esys.Subscribe;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainClient {
     private static Client client;
-    public final Logger LOGGER = Logger.getLogger("Client");
     public static long ping = 0;
 
     public static Client getClient() {
@@ -40,16 +39,12 @@ public class MainClient {
             }
         }));
 
-
-        /*
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 client.send(new CPacketPing(System.currentTimeMillis()));
             }
         }, 0, 1500);
-
-         */
     }
 
     @Subscribe
@@ -62,11 +57,11 @@ public class MainClient {
 
     @Subscribe
     public static void onServerDisconnect(EventServerDisconnect event){
-        System.out.println("Disconnected from server, Reason: " + event.getReason());
+        client.LOGGER.info("Disconnected from server, Reason: " + event.getReason());
     }
 
     @Subscribe
     public static void onClientConnect(EventClientConnect event){
-        System.out.println("Client connected: " + event.getClient().getConnectionUUID().get().toString());
+        client.LOGGER.info("Client connected: " + event.getClient().getConnectionUUID().get().toString());
     }
 }

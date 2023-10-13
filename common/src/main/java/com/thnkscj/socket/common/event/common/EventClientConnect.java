@@ -5,6 +5,9 @@ import com.thnkscj.socket.common.event.Event;
 import com.thnkscj.socket.common.util.annotation.Side;
 import com.thnkscj.socket.common.util.annotation.SideOnly;
 
+/**
+ * Gets fired when a client connects. This event is fired on both sides.
+ */
 public class EventClientConnect extends Event {
 
     private final Client client;

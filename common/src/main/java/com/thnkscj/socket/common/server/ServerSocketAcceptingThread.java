@@ -4,25 +4,52 @@ import com.thnkscj.socket.common.client.Client;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.PacketRegistry;
 import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
-import org.boon.core.Sys;
+import com.thnkscj.socket.common.util.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class is used to accept new clients and add them to the client list.
+ * It also provides methods to send packets to clients.
+ *
+ * @see Client
+ */
 public class ServerSocketAcceptingThread extends Thread {
 
+    /**
+     * This list contains all connected clients.
+     */
     private static final List<Client> clients = new ArrayList<>();
+
+    /**
+     * The server socket.
+     */
     private final ServerSocket serverSocket;
 
+    /**
+     * Logger
+     */
+    private final Logger LOGGER = Logger.getLogger("Server/AcceptingThread");
+
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param serverSocket The server socket.
+     */
     public ServerSocketAcceptingThread(final ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
+    /**
+     * Returns a client by its UUID.
+     *
+     * @return The client.
+     */
     public static Client getClient(UUID uuid) {
         for (Client client : clients) {
             if (client.getConnectionUUID().get().equals(uuid)) {
@@ -32,6 +59,9 @@ public class ServerSocketAcceptingThread extends Thread {
         return null;
     }
 
+    /**
+     * This handles the accepting of new clients and sending {@link SPacketRequestExchange} to them.
+     */
     @Override
     public void run() {
         super.run();
@@ -54,21 +84,37 @@ public class ServerSocketAcceptingThread extends Thread {
         }
     }
 
+    /**
+     * Sends a packet to a client by its UUID.
+     *
+     * @param packet The packet.
+     * @param uuid The UUID of the client.
+     */
     public void sendToClient(final Packet packet, final UUID uuid) {
         clients.stream().filter(client -> client.getConnectionUUID().get().equals(uuid)).forEach(client -> {
-            System.out.println("[VCS] Sending packet: " + packet.getClass().getSimpleName() + " to client: " + client.getConnectionUUID().get());
+            LOGGER.debug("Sending packet " + packet.getClass().getSimpleName() + " to " + client.getConnectionUUID().get());
             client.send(packet);
         });
     }
 
+    /**
+     * Sends a packet to all clients.
+     *
+     * @param packet The packet.
+     */
     public void sendToAllClients(final Packet packet) {
         clients.forEach(client -> client.send(packet));
     }
 
+    /**
+     * Disconnects a client by its UUID.
+     *
+     * @param uuid The UUID of the client.
+     */
     public void disconnectClient(final UUID uuid) {
         clients.stream().filter(client -> client.getConnectionUUID().get().equals(uuid)).forEach(client -> {
             try {
-                System.out.println("[VCS] Client: " + client.getConnectionUUID().get() + " will be disconnected!");
+                LOGGER.info("Disconnecting client " + client.getConnectionUUID().get());
                 client.disconnect();
             } catch (final IOException exception) {
                 exception.printStackTrace();
@@ -76,8 +122,11 @@ public class ServerSocketAcceptingThread extends Thread {
         });
     }
 
+    /**
+     * Disconnects all clients.
+     */
     public void disconnectAllClients() {
-        System.out.println("[VCS] All Clients will be disconnected!");
+        LOGGER.info("Disconnecting all clients");
         clients.forEach(client -> {
             try {
                 if (client != null) {

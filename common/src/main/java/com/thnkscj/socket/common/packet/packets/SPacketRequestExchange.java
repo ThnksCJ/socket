@@ -9,6 +9,9 @@ import java.util.UUID;
 
 import static com.thnkscj.socket.common.util.Reflection.registerPackets;
 
+/**
+ * Server packet that tells the client what packets it can send to the server.
+ */
 public class SPacketRequestExchange extends Packet {
     private String[] packetList;
 

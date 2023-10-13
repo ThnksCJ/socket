@@ -11,6 +11,5 @@ import org.cubic.esys.EventDispatcher;
  */
 @SideOnly(Side.Server)
 public final class ServerEventBus {
-
     public static final EventBus EVENT_BUS = EventDispatcher.builder().name("SBus").build();
 }

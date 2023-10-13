@@ -18,19 +18,58 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This handles:
+ * - Sending packets
+ * - Posting events
+ * - Writing to the output stream
+ *
+ * @author Thnks_CJ
+ */
+
 public class OutputStreamThread {
 
+    /**
+     * The client instance (wraps the socket)
+     */
     private final Client client;
+
+    /**
+     * The underlying socket
+     */
     private final Socket socket;
+
+    /**
+     * A list of packets to send. You can queue packets to send.
+     */
     private final List<Packet> packets = new ArrayList<>();
+
+    /**
+     * The timer that handles the sending of packets
+     */
     private final Timer timer = new Timer();
+
+    /**
+     * The output stream
+     */
     private OutputStream finalOutputStream;
 
+
+    /**
+     * Creates a new output stream thread
+     *
+     * @param client the client instance
+     */
     public OutputStreamThread(final Client client) {
         this.client = client;
         this.socket = this.client.getSocket();
     }
 
+    /**
+     * Starts the output stream thread
+     *
+     * @throws IOException if an I/O error occurs when creating the output stream
+     */
     public void run() throws IOException {
         finalOutputStream = this.socket.getOutputStream();
 
@@ -89,6 +128,9 @@ public class OutputStreamThread {
         }, 0, 1);
     }
 
+    /**
+     * Stops the thread
+     */
     public void interrupt() {
         try {
             this.finalOutputStream.close();
@@ -98,6 +140,12 @@ public class OutputStreamThread {
         }
     }
 
+
+    /**
+     * Queues a packet to send
+     *
+     * @param packet the packet to send
+     */
     public void send(final Packet packet) {
         this.packets.add(packet);
     }

@@ -133,12 +133,10 @@ public class SPacketPong extends Packet {
 
 ### Server Packets
 
-| Packets                           | Description              | Occurrences                           |
-|:----------------------------------|:-------------------------|:--------------------------------------|
-| `SPacketUpdateUUID`               | Updates client UUID      | **Only Once**. On connection opening  |
-| `SPacketProfile`                  | Set some profile info    | **Only Once**. On connection opening  |
-| `SPacketCreateGroup`              | Creates a voice group    | Whenever the user makes a voice group |
-| `SPacketRequestGroupList`         | Requests all group names | On request                            |
+| Packets                   | Description                                                    | Occurrences                           |
+|:--------------------------|:---------------------------------------------------------------|:--------------------------------------|
+| `SPacketRequestExchange`  | Sends recognised packets to client (also sets connection uuid) | **Only Once**. On connection opening  |
+| `SPacketPong`             | Relay for CPacketPing                                          | Whenever the user sends a CPacketPing |
 
 ### Client Packets
 
@@ -146,9 +144,6 @@ public class SPacketPong extends Packet {
 |:--------------------------|:-----------------------------|:-----------------------------------------|
 | `CPacketPing`             | Client's ping to server      | **Every 1.5 seconds**. Always sends      |
 | `CPacketDisconnect`       | When client is disconnecting | **On Disconnect**.                       |
-| `CPacketProfile`          | Set some profile info        | **Only Once**. On connection opening     |
-| `CPacketCreateGroup`      | Creates a voice group        | Whenever the user makes a voice group    |
-| `CPacketRequestGroupList` | Requests all group names     | **On request**                           |
 
 # Events & Event Listeners
 

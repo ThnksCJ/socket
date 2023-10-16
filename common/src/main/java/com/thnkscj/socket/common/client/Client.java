@@ -65,9 +65,6 @@ public class Client extends Connection {
         this.hostname = hostname;
         this.port = port;
         this.server = false;
-
-        // If we post here then the client starts with a mismatched uuid
-        //ClientEventBus.EVENT_BUS.post(new EventClientConnect(this));
     }
 
     /**
@@ -78,8 +75,6 @@ public class Client extends Connection {
     public Client(final Socket socket) {
         this.socket = socket;
         this.server = true;
-
-        ServerEventBus.EVENT_BUS.post(new EventClientConnect(this));
     }
 
     /**
@@ -123,6 +118,12 @@ public class Client extends Connection {
      */
     @Override
     public void connect() throws IOException {
+        if (this.isServer()) {
+            ServerEventBus.EVENT_BUS.post(new EventClientConnect(this));
+        } else {
+            ClientEventBus.EVENT_BUS.post(new EventClientConnect(this));
+        }
+
         if (this.socket == null) {
             this.socket = new Socket(this.hostname, this.port);
             this.socket.setKeepAlive(true);

@@ -29,7 +29,7 @@ public class MainClient {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                client.send(new CPacketDisconnect(getClient().getConnectionUUID().get()));
+                client.send(new CPacketDisconnect());
                 Thread.sleep(2000);
                 client.disconnect();
             } catch (IOException e) {
@@ -50,7 +50,6 @@ public class MainClient {
     @Subscribe
     public static void onPacket(EventPacket.Receive event) {
         if (event.getPacket() instanceof SPacketRequestExchange) {
-            ClientEventBus.EVENT_BUS.post(new EventClientConnect(client));
             client.setHasExchangePacket(true);
         }
     }
@@ -62,6 +61,6 @@ public class MainClient {
 
     @Subscribe
     public static void onClientConnect(EventClientConnect event){
-        client.LOGGER.info("Client connected: " + event.getClient().getConnectionUUID().get().toString());
+        client.LOGGER.info("Client connected to server");
     }
 }

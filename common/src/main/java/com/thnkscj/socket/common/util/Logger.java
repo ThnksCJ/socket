@@ -10,7 +10,7 @@ public class Logger {
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_YELLOW = "\u001B[33m";
     private final String name;
-    private final boolean debug = true;
+    private final boolean debug = false;
 
     /**
      * Create a logger with the given name

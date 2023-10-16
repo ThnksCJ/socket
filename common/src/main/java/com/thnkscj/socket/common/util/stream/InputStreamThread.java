@@ -96,17 +96,12 @@ public class InputStreamThread {
                             final ReadingByteBuffer readingByteBuffer = new ReadingByteBuffer(bytes.get());
                             final int packetId = readingByteBuffer.readInt();
                             final Class<? extends Packet> packet = PacketRegistry.get(packetId);
-                            final UUID connectionUUID = readingByteBuffer.readUUID();
 
-                            if (packet.equals(SPacketRequestExchange.class) && !client.isServer()) {
-                                client.getConnectionUUID().set(connectionUUID);
-                            }
-
-                            Packet thePacket = packet.getConstructor(UUID.class).newInstance(connectionUUID);
+                            Packet thePacket = packet.getConstructor().newInstance();
 
                             EventPacket.Receive event = new EventPacket.Receive(thePacket);
 
-                            thePacket.receive(readingByteBuffer);
+                            thePacket.receive(readingByteBuffer, client);
 
                             if(client.isServer())
                                 ServerEventBus.EVENT_BUS.post(event);
@@ -116,6 +111,10 @@ public class InputStreamThread {
                             socket.close();
                         }
                     }
+
+                    /*
+                    This is broken right now as we never update the start[0], should probably create a
+                    packet handler fot his type of thing but hey ho
 
                     if (client.isServer() && start[0] == 0) {
                         start[0] = System.currentTimeMillis();
@@ -132,11 +131,14 @@ public class InputStreamThread {
                         ServerEventBus.EVENT_BUS.post(new EventClientDisconnect(offender));
                         interrupt();
                     }
-                } catch (final InstantiationException | IllegalAccessException | NoSuchMethodException |
-                               InvocationTargetException exception) {
+
+                     */
+                } catch (final InstantiationException | IllegalAccessException exception) {
                     exception.printStackTrace();
                 } catch (final IOException ignored) {
                     interrupt();
+                } catch (InvocationTargetException | NoSuchMethodException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }, 0, 1);

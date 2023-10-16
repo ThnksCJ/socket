@@ -102,7 +102,6 @@ public class OutputStreamThread {
                                 ClientEventBus.EVENT_BUS.post(event);
 
                             writingByteBuffer.writeInt(packetId);
-                            writingByteBuffer.writeUUID(client.getConnectionUUID().get());
 
                             packet.send(writingByteBuffer);
 

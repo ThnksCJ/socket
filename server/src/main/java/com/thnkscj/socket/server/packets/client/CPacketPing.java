@@ -1,5 +1,6 @@
 package com.thnkscj.socket.server.packets.client;
 
+import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.server.Server;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
@@ -8,19 +9,19 @@ import com.thnkscj.socket.server.packets.server.SPacketPong;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class CPacketPing extends Packet {
-    public CPacketPing(UUID connectionUUID) {
-        super(connectionUUID);
-    }
+
+    public CPacketPing(){}
 
     @Override
     public void send(WritingByteBuffer writingByteBuffer) {
     }
 
     @Override
-    public void receive(ReadingByteBuffer readingByteBuffer) {
+    public void receive(ReadingByteBuffer readingByteBuffer, Connection conn) {
         long currentTimeMillis = readingByteBuffer.readLong();
 
-        Server.sendToClient(new SPacketPong(currentTimeMillis), getConnectionUUID());
+        Server.sendToClient(new SPacketPong(currentTimeMillis), conn.getConnectionUUID().get());
     }
 }

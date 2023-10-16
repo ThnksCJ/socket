@@ -1,20 +1,19 @@
 package com.thnkscj.socket.client.packets.client;
 
+import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class CPacketPing extends Packet {
     private static long currentTimeMillis;
 
-    public CPacketPing(UUID connectionUUID) {
-        super(connectionUUID);
-    }
+    public CPacketPing(){}
 
     public CPacketPing(long currentTimeMillis) {
-        super(null);
         CPacketPing.currentTimeMillis = currentTimeMillis;
     }
 
@@ -24,6 +23,6 @@ public class CPacketPing extends Packet {
     }
 
     @Override
-    public void receive(ReadingByteBuffer readingByteBuffer) {
+    public void receive(ReadingByteBuffer readingByteBuffer, Connection conn) {
     }
 }

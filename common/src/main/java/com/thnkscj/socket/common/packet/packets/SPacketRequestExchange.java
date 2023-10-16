@@ -1,5 +1,6 @@
 package com.thnkscj.socket.common.packet.packets;
 
+import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
@@ -12,15 +13,13 @@ import static com.thnkscj.socket.common.util.Reflection.registerPackets;
 /**
  * Server packet that tells the client what packets it can send to the server.
  */
+@SuppressWarnings("unused")
 public class SPacketRequestExchange extends Packet {
     private String[] packetList;
 
-    public SPacketRequestExchange(UUID uuid) {
-        super(uuid);
-    }
+    public SPacketRequestExchange() {}
 
     public SPacketRequestExchange(String[] packetList) {
-        super(null);
         this.packetList = packetList;
     }
 
@@ -30,7 +29,7 @@ public class SPacketRequestExchange extends Packet {
     }
 
     @Override
-    public void receive(ReadingByteBuffer readingByteBuffer) {
+    public void receive(ReadingByteBuffer readingByteBuffer, Connection conn) {
         packetList = readingByteBuffer.readStringArray();
 
         Arrays.stream(packetList).forEach(packetName -> {

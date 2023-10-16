@@ -1,15 +1,15 @@
 package com.thnkscj.socket.client.packets.client;
 
+import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class CPacketDisconnect extends Packet {
-    public CPacketDisconnect(UUID connectionUUID) {
-        super(connectionUUID);
-    }
+    public CPacketDisconnect() {}
 
     @Override
     public void send(WritingByteBuffer writingByteBuffer) {
@@ -17,7 +17,7 @@ public class CPacketDisconnect extends Packet {
     }
 
     @Override
-    public void receive(ReadingByteBuffer readingByteBuffer) {
+    public void receive(ReadingByteBuffer readingByteBuffer, Connection conn) {
 
     }
 }

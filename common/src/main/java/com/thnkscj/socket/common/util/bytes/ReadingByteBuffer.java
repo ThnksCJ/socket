@@ -27,6 +27,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a boolean from the {@link ByteBuffer}.
+     *
      * @return The boolean that was read.
      */
     public boolean readBoolean() {
@@ -35,6 +36,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a byte from the {@link ByteBuffer}.
+     *
      * @return The byte that was read.
      */
     public byte readByte() {
@@ -43,6 +45,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a short from the {@link ByteBuffer}.
+     *
      * @return The short that was read.
      */
     public short readShort() {
@@ -51,6 +54,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads an integer from the {@link ByteBuffer}.
+     *
      * @return The integer that was read.
      */
     public int readInt() {
@@ -59,6 +63,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a long from the {@link ByteBuffer}.
+     *
      * @return The long that was read.
      */
     public long readLong() {
@@ -67,6 +72,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a float from the {@link ByteBuffer}.
+     *
      * @return The float that was read.
      */
     public float readFloat() {
@@ -75,6 +81,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a double from the {@link ByteBuffer}.
+     *
      * @return The double that was read.
      */
     public double readDouble() {
@@ -83,6 +90,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a character from the {@link ByteBuffer}.
+     *
      * @return The character that was read.
      */
     public char readChar() {
@@ -91,6 +99,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a string array from the {@link ByteBuffer}.
+     *
      * @return The string array that was read.
      */
     public String[] readStringArray() {
@@ -104,6 +113,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a byte array from the {@link ByteBuffer}.
+     *
      * @return The byte array that was read.
      */
     public String readString() {
@@ -115,6 +125,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a byte array from the {@link ByteBuffer}.
+     *
      * @return The byte array that was read.
      */
     public byte[] readBytes() {
@@ -126,6 +137,7 @@ public class ReadingByteBuffer {
 
     /**
      * Reads a {@link UUID} from the {@link ByteBuffer}.
+     *
      * @return The {@link UUID} that was read.
      */
     public UUID readUUID() {

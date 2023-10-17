@@ -1,13 +1,13 @@
 package com.thnkscj.socket.server;
 
-import com.thnkscj.socket.common.event.common.EventClientConnect;
-import com.thnkscj.socket.common.event.common.EventPacket;
-import com.thnkscj.socket.common.event.server.EventClientDisconnect;
 import com.thnkscj.socket.common.packet.PacketRegistry;
-import com.thnkscj.socket.common.server.Server;
-import com.thnkscj.socket.common.server.ServerEventBus;
-import com.thnkscj.socket.server.packets.client.*;
-import com.thnkscj.socket.server.packets.server.*;
+import com.thnkscj.socket.server.event.ServerEventBus;
+import com.thnkscj.socket.server.event.events.EventClientConnect;
+import com.thnkscj.socket.server.event.events.EventClientDisconnect;
+import com.thnkscj.socket.server.network.Server;
+import com.thnkscj.socket.server.packets.client.CPacketDisconnect;
+import com.thnkscj.socket.server.packets.client.CPacketPing;
+import com.thnkscj.socket.server.packets.server.SPacketPong;
 import org.cubic.esys.Subscribe;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class MainServer {
             try {
                 server.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+                server.LOGGER.error("Failed to disconnect server", e.getCause().getMessage());
             }
         }));
     }

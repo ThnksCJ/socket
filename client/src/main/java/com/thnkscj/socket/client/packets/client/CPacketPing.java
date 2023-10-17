@@ -5,13 +5,12 @@ import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
-import java.util.UUID;
-
 @SuppressWarnings("unused")
 public class CPacketPing extends Packet {
     private static long currentTimeMillis;
 
-    public CPacketPing(){}
+    public CPacketPing() {
+    }
 
     public CPacketPing(long currentTimeMillis) {
         CPacketPing.currentTimeMillis = currentTimeMillis;

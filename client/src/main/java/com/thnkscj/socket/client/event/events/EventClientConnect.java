@@ -1,6 +1,6 @@
-package com.thnkscj.socket.common.event.common;
+package com.thnkscj.socket.client.event.events;
 
-import com.thnkscj.socket.common.client.Client;
+import com.thnkscj.socket.client.network.Client;
 import com.thnkscj.socket.common.event.Event;
 
 /**

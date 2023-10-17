@@ -1,7 +1,5 @@
-package com.thnkscj.socket.common.client;
+package com.thnkscj.socket.client.event;
 
-import com.thnkscj.socket.common.event.annotation.Side;
-import com.thnkscj.socket.common.event.annotation.SideOnly;
 import org.cubic.esys.EventBus;
 import org.cubic.esys.EventDispatcher;
 
@@ -9,7 +7,6 @@ import org.cubic.esys.EventDispatcher;
  * This class should only be called from the client itself.
  * This class is here for event bus accessibility reasons.
  */
-@SideOnly(Side.Client)
 public final class ClientEventBus {
 
     public static final EventBus EVENT_BUS = EventDispatcher.builder().name("CBus").build();

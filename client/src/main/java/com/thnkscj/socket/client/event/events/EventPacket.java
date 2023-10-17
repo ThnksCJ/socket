@@ -1,4 +1,4 @@
-package com.thnkscj.socket.common.event.common;
+package com.thnkscj.socket.client.event.events;
 
 import com.thnkscj.socket.common.event.Event;
 import com.thnkscj.socket.common.packet.Packet;
@@ -6,7 +6,7 @@ import com.thnkscj.socket.common.packet.Packet;
 /**
  * Gets fired on packet based actions
  */
-@SuppressWarnings("unused unchecked")
+@SuppressWarnings("unused")
 public class EventPacket extends Event {
 
     private final Packet packet;
@@ -19,18 +19,13 @@ public class EventPacket extends Event {
         return packet;
     }
 
-    public <T extends Packet> T getPacketCasted(){
-        return (T) packet;
-    }
-
     /**
      * Checks if the packet is an instance of the given class
      *
      * @param cls The class to check
-     *
      * @return True if the packet is an instance of the given class
      */
-    public <T extends Packet> boolean isPacket(Class<T> cls){
+    public <T extends Packet> boolean isPacket(Class<T> cls) {
         return cls.isAssignableFrom(packet.getClass());
     }
 

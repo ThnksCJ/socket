@@ -1,8 +1,9 @@
-package com.thnkscj.socket.common.server;
+package com.thnkscj.socket.server.network;
 
 import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.Logger;
+import com.thnkscj.socket.server.ServerSocketAcceptingThread;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,21 +20,18 @@ public class Server extends Connection {
      * Used to accept clients.
      */
     private static ServerSocketAcceptingThread serverSocketAcceptingThread;
-
-    /**
-     * Port to listen to.
-     */
-    private final int port;
-
-    /**
-     * Server socket.
-     */
-    private ServerSocket serverSocket;
-
     /**
      * Logger
      */
     public final Logger LOGGER = Logger.getLogger("Server");
+    /**
+     * Port to listen to.
+     */
+    private final int port;
+    /**
+     * Server socket.
+     */
+    private ServerSocket serverSocket;
 
     /**
      * Constructor.
@@ -50,7 +48,7 @@ public class Server extends Connection {
      * Sends a packet to a client.
      *
      * @param packet Packet to send.
-     * @param uuid UUID of the client.
+     * @param uuid   UUID of the client.
      */
     public static void sendToClient(final Packet packet, final UUID uuid) {
         serverSocketAcceptingThread.sendToClient(packet, uuid);

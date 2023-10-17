@@ -6,13 +6,12 @@ import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
-import java.util.UUID;
-
 @SuppressWarnings("unused")
 public class SPacketPong extends Packet {
     private static long currentTimeMillis;
 
-    public SPacketPong(){}
+    public SPacketPong() {
+    }
 
     public SPacketPong(long currentTimeMillis) {
         SPacketPong.currentTimeMillis = currentTimeMillis;

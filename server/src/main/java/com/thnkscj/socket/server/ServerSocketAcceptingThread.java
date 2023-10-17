@@ -1,10 +1,10 @@
-package com.thnkscj.socket.common.server;
+package com.thnkscj.socket.server;
 
-import com.thnkscj.socket.common.client.Client;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.PacketRegistry;
 import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
 import com.thnkscj.socket.common.util.Logger;
+import com.thnkscj.socket.server.network.Client;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -80,7 +80,7 @@ public class ServerSocketAcceptingThread extends Thread {
                 }
             }
         } catch (final IOException exception) {
-            exception.printStackTrace();
+            LOGGER.error(exception.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class ServerSocketAcceptingThread extends Thread {
      * Sends a packet to a client by its UUID.
      *
      * @param packet The packet.
-     * @param uuid The UUID of the client.
+     * @param uuid   The UUID of the client.
      */
     public void sendToClient(final Packet packet, final UUID uuid) {
         clients.stream().filter(client -> client.getConnectionUUID().get().equals(uuid)).forEach(client -> {
@@ -117,7 +117,7 @@ public class ServerSocketAcceptingThread extends Thread {
                 LOGGER.info("Disconnecting client " + client.getConnectionUUID().get());
                 client.disconnect();
             } catch (final IOException exception) {
-                exception.printStackTrace();
+                LOGGER.error(exception.getMessage());
             }
         });
     }
@@ -133,7 +133,7 @@ public class ServerSocketAcceptingThread extends Thread {
                     client.disconnect();
                 }
             } catch (final IOException exception) {
-                exception.printStackTrace();
+                LOGGER.error(exception.getMessage());
             }
         });
         clients.clear();

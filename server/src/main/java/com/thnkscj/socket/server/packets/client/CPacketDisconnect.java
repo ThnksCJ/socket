@@ -1,19 +1,18 @@
 package com.thnkscj.socket.server.packets.client;
 
 import com.thnkscj.socket.common.Connection;
-import com.thnkscj.socket.common.event.server.EventClientDisconnect;
 import com.thnkscj.socket.common.packet.Packet;
-import com.thnkscj.socket.common.server.ServerEventBus;
-import com.thnkscj.socket.common.server.ServerSocketAcceptingThread;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
-
-import java.util.UUID;
+import com.thnkscj.socket.server.ServerSocketAcceptingThread;
+import com.thnkscj.socket.server.event.ServerEventBus;
+import com.thnkscj.socket.server.event.events.EventClientDisconnect;
 
 @SuppressWarnings("unused")
 public class CPacketDisconnect extends Packet {
 
-    public CPacketDisconnect(){}
+    public CPacketDisconnect() {
+    }
 
     @Override
     public void send(WritingByteBuffer writingByteBuffer) {

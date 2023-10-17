@@ -32,6 +32,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a boolean to the {@link ByteBuf}.
+     *
      * @param value A boolean.
      */
     public void writeBoolean(final boolean value) {
@@ -40,6 +41,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a byte to the {@link ByteBuf}.
+     *
      * @param value A byte.
      */
     public void writeByte(final byte value) {
@@ -48,6 +50,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a short to the {@link ByteBuf}.
+     *
      * @param value A short.
      */
     public void writeShort(final short value) {
@@ -56,6 +59,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes an int to the {@link ByteBuf}.
+     *
      * @param value An int.
      */
     public void writeInt(final int value) {
@@ -64,6 +68,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a long to the {@link ByteBuf}.
+     *
      * @param value A long.
      */
     public void writeLong(final long value) {
@@ -72,6 +77,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a float to the {@link ByteBuf}.
+     *
      * @param value A float.
      */
     public void writeFloat(final float value) {
@@ -80,6 +86,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a double to the {@link ByteBuf}.
+     *
      * @param value A double.
      */
     public void writeDouble(final double value) {
@@ -88,6 +95,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a char to the {@link ByteBuf}.
+     *
      * @param value A char.
      */
     public void writeChar(final char value) {
@@ -96,6 +104,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
+     *
      * @param value A {@link ByteBuffer}.
      */
     public void writeString(final String value) {
@@ -107,6 +116,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
+     *
      * @param value A {@link ByteBuffer}.
      */
     public void writeStringArray(final String[] value) {
@@ -119,6 +129,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
+     *
      * @param value A {@link ByteBuffer}.
      */
     public void writeBytes(final byte[] value) {
@@ -130,6 +141,7 @@ public class WritingByteBuffer {
 
     /**
      * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
+     *
      * @param value A {@link ByteBuffer}.
      */
     public void writeUUID(final UUID value) {
@@ -140,6 +152,7 @@ public class WritingByteBuffer {
 
     /**
      * Transforms the {@link ByteBuf} into a byte array. This is the final step in the writing process.
+     *
      * @return A byte array.
      */
     public byte[] toBytes() {

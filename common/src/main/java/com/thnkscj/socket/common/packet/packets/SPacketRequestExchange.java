@@ -6,7 +6,6 @@ import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import static com.thnkscj.socket.common.util.Reflection.registerPackets;
 
@@ -17,7 +16,8 @@ import static com.thnkscj.socket.common.util.Reflection.registerPackets;
 public class SPacketRequestExchange extends Packet {
     private String[] packetList;
 
-    public SPacketRequestExchange() {}
+    public SPacketRequestExchange() {
+    }
 
     public SPacketRequestExchange(String[] packetList) {
         this.packetList = packetList;

@@ -1,58 +1,56 @@
-package com.thnkscj.socket.common.util.stream;
+package com.thnkscj.socket.server.stream;
 
-import com.thnkscj.socket.common.client.Client;
-import com.thnkscj.socket.common.client.ClientEventBus;
-import com.thnkscj.socket.common.event.common.EventPacket;
-import com.thnkscj.socket.common.event.server.EventClientDisconnect;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.PacketRegistry;
-import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
-import com.thnkscj.socket.common.server.ServerEventBus;
-import com.thnkscj.socket.common.server.ServerSocketAcceptingThread;
+import com.thnkscj.socket.common.util.Logger;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
-import org.boon.core.Sys;
+import com.thnkscj.socket.server.event.ServerEventBus;
+import com.thnkscj.socket.server.event.events.EventPacket;
+import com.thnkscj.socket.server.network.Client;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class is used to read the input stream of a socket.
  * Handles:
  * - receiving packets
- * - posting  vents
+ * - posting events
  *
  * @author Thnks_CJ
  */
 public class InputStreamThread {
 
     /**
+     * The output stream logger
+     */
+    private static final Logger LOGGER = Logger.getLogger("InputStreamThread");
+    /**
      * The bytes that are read from the input stream.
      */
     final AtomicReference<byte[]> bytes = new AtomicReference<>(null);
-
     /**
      * The client that is connected to the socket.
      */
     private final Client client;
-
     /**
      * The underlying socket
      */
     private final Socket socket;
-
     /**
      * The timer that handles the reading of packets
      */
     private final Timer timer = new Timer();
-
     /**
      * The input stream
      */
     private InputStream finalInputStream;
+
 
     /**
      * Creates a new input stream thread
@@ -103,10 +101,7 @@ public class InputStreamThread {
 
                             thePacket.receive(readingByteBuffer, client);
 
-                            if(client.isServer())
-                                ServerEventBus.EVENT_BUS.post(event);
-                            else
-                                ClientEventBus.EVENT_BUS.post(event);
+                            ServerEventBus.EVENT_BUS.post(event);
                         } else {
                             socket.close();
                         }
@@ -133,12 +128,11 @@ public class InputStreamThread {
                     }
 
                      */
-                } catch (final InstantiationException | IllegalAccessException exception) {
-                    exception.printStackTrace();
+                } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
+                               IllegalAccessException exception) {
+                    LOGGER.error(exception.getMessage());
                 } catch (final IOException ignored) {
                     interrupt();
-                } catch (InvocationTargetException | NoSuchMethodException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }, 0, 1);
@@ -152,7 +146,7 @@ public class InputStreamThread {
             this.finalInputStream.close();
             this.timer.cancel();
         } catch (final IOException exception) {
-            exception.printStackTrace();
+            LOGGER.error(exception.getMessage());
         }
     }
 }

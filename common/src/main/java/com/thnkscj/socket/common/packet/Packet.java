@@ -5,8 +5,6 @@ import com.thnkscj.socket.common.util.Logger;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
-import java.util.UUID;
-
 /**
  * The packet is used to exchange data between the client and the server
  **/
@@ -26,7 +24,7 @@ public abstract class Packet {
      * The readingByteBuffer is used to read data from the other side. e.g read data
      *
      * @param readingByteBuffer the current packet data buffer.
-     * @param conn The client that sent the packet (for easy replying)
+     * @param conn              The client that sent the packet (for easy replying)
      **/
     public abstract void receive(ReadingByteBuffer readingByteBuffer, Connection conn);
 

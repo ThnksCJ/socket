@@ -1,11 +1,12 @@
 package com.thnkscj.socket.client;
 
-import com.thnkscj.socket.common.client.Client;
-import com.thnkscj.socket.common.client.ClientEventBus;
-import com.thnkscj.socket.common.event.common.EventClientConnect;
-import com.thnkscj.socket.common.event.client.EventServerDisconnect;
-import com.thnkscj.socket.common.event.common.EventPacket;
-import com.thnkscj.socket.client.packets.client.*;
+import com.thnkscj.socket.client.event.ClientEventBus;
+import com.thnkscj.socket.client.event.events.EventClientConnect;
+import com.thnkscj.socket.client.event.events.EventPacket;
+import com.thnkscj.socket.client.event.events.EventServerDisconnect;
+import com.thnkscj.socket.client.network.Client;
+import com.thnkscj.socket.client.packets.client.CPacketDisconnect;
+import com.thnkscj.socket.client.packets.client.CPacketPing;
 import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
 import org.cubic.esys.Subscribe;
 
@@ -14,8 +15,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainClient {
-    private static Client client;
     public static long ping = 0;
+    private static Client client;
 
     public static Client getClient() {
         return client;
@@ -32,10 +33,8 @@ public class MainClient {
                 client.send(new CPacketDisconnect());
                 Thread.sleep(2000);
                 client.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException | IOException e) {
+                client.LOGGER.error("Error while disconnecting from server", e.getCause().getMessage());
             }
         }));
 
@@ -55,12 +54,12 @@ public class MainClient {
     }
 
     @Subscribe
-    public static void onServerDisconnect(EventServerDisconnect event){
+    public static void onServerDisconnect(EventServerDisconnect event) {
         client.LOGGER.info("Disconnected from server, Reason: " + event.getReason());
     }
 
     @Subscribe
-    public static void onClientConnect(EventClientConnect event){
+    public static void onClientConnect(EventClientConnect event) {
         client.LOGGER.info("Client connected to server");
     }
 }

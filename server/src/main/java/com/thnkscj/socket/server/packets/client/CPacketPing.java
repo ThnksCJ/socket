@@ -2,17 +2,16 @@ package com.thnkscj.socket.server.packets.client;
 
 import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
-import com.thnkscj.socket.common.server.Server;
 import com.thnkscj.socket.common.util.bytes.ReadingByteBuffer;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
+import com.thnkscj.socket.server.network.Server;
 import com.thnkscj.socket.server.packets.server.SPacketPong;
-
-import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class CPacketPing extends Packet {
 
-    public CPacketPing(){}
+    public CPacketPing() {
+    }
 
     @Override
     public void send(WritingByteBuffer writingByteBuffer) {

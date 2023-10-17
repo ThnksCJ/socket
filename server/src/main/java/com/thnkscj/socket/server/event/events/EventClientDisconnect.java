@@ -1,14 +1,11 @@
-package com.thnkscj.socket.common.event.server;
+package com.thnkscj.socket.server.event.events;
 
-import com.thnkscj.socket.common.client.Client;
 import com.thnkscj.socket.common.event.Event;
-import com.thnkscj.socket.common.event.annotation.Side;
-import com.thnkscj.socket.common.event.annotation.SideOnly;
+import com.thnkscj.socket.server.network.Client;
 
 /**
  * Gets fired when a client disconnects from the server.
  */
-@SideOnly(Side.Server)
 public class EventClientDisconnect extends Event {
 
     private final Client client;

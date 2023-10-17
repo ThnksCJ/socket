@@ -1,12 +1,12 @@
-package com.thnkscj.socket.common.util.stream;
+package com.thnkscj.socket.client.stream;
 
-import com.thnkscj.socket.common.client.Client;
-import com.thnkscj.socket.common.client.ClientEventBus;
-import com.thnkscj.socket.common.event.client.EventServerDisconnect;
-import com.thnkscj.socket.common.event.common.EventPacket;
+import com.thnkscj.socket.client.event.ClientEventBus;
+import com.thnkscj.socket.client.event.events.EventPacket;
+import com.thnkscj.socket.client.event.events.EventServerDisconnect;
+import com.thnkscj.socket.client.network.Client;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.PacketRegistry;
-import com.thnkscj.socket.common.server.ServerEventBus;
+import com.thnkscj.socket.common.util.Logger;
 import com.thnkscj.socket.common.util.bytes.WritingByteBuffer;
 
 import java.io.IOException;
@@ -28,6 +28,11 @@ import java.util.TimerTask;
  */
 
 public class OutputStreamThread {
+
+    /**
+     * The output stream logger
+     */
+    private static final Logger LOGGER = Logger.getLogger("OutputStreamThread");
 
     /**
      * The client instance (wraps the socket)
@@ -53,7 +58,6 @@ public class OutputStreamThread {
      * The output stream
      */
     private OutputStream finalOutputStream;
-
 
     /**
      * Creates a new output stream thread
@@ -96,10 +100,7 @@ public class OutputStreamThread {
 
                             EventPacket.Send event = new EventPacket.Send(packet);
 
-                            if (client.isServer())
-                                ServerEventBus.EVENT_BUS.post(event);
-                            else
-                                ClientEventBus.EVENT_BUS.post(event);
+                            ClientEventBus.EVENT_BUS.post(event);
 
                             writingByteBuffer.writeInt(packetId);
 
@@ -107,21 +108,21 @@ public class OutputStreamThread {
 
                             try {
                                 final byte[] bytes = writingByteBuffer.toBytes();
-                                assert finalOutputStream != null;
+
+                                if (finalOutputStream == null)
+                                    return;
 
                                 finalOutputStream.write(bytes.length);
                                 finalOutputStream.write(bytes);
                                 finalOutputStream.flush();
                             } catch (final SocketException exception) {
-                                if(!client.isServer()) {
-                                    ClientEventBus.EVENT_BUS.post(new EventServerDisconnect(exception.getMessage()));
-                                    client.disconnect();
-                                }
+                                ClientEventBus.EVENT_BUS.post(new EventServerDisconnect(exception.getMessage()));
+                                client.disconnect();
                             }
                         }
                     }
                 } catch (final IOException | NullPointerException exception) {
-                    exception.printStackTrace();
+                    LOGGER.error(exception.getMessage());
                 }
             }
         }, 0, 1);
@@ -135,7 +136,7 @@ public class OutputStreamThread {
             this.finalOutputStream.close();
             this.timer.cancel();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            LOGGER.error(exception.getMessage());
         }
     }
 

@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.thnkscj.cubic.voicechat'
+group 'com.thnkscj.socket'
 version '1.0-SNAPSHOT'
 
 repositories {

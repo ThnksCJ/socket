@@ -109,7 +109,7 @@ public class InputStreamThread {
 
                     /*
                     This is broken right now as we never update the start[0], should probably create a
-                    packet handler fot his type of thing but hey ho
+                    packet handler for this type of thing but hey ho
 
                     if (client.isServer() && start[0] == 0) {
                         start[0] = System.currentTimeMillis();

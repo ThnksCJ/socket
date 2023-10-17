@@ -1,7 +1,7 @@
 package com.thnkscj.socket.common.client;
 
-import com.thnkscj.socket.common.util.annotation.Side;
-import com.thnkscj.socket.common.util.annotation.SideOnly;
+import com.thnkscj.socket.common.event.annotation.Side;
+import com.thnkscj.socket.common.event.annotation.SideOnly;
 import org.cubic.esys.EventBus;
 import org.cubic.esys.EventDispatcher;
 

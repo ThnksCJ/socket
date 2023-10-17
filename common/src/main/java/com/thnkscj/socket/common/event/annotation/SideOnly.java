@@ -1,4 +1,4 @@
-package com.thnkscj.socket.common.util.annotation;
+package com.thnkscj.socket.common.event.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

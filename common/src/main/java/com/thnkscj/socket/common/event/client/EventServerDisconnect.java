@@ -1,8 +1,8 @@
 package com.thnkscj.socket.common.event.client;
 
 import com.thnkscj.socket.common.event.Event;
-import com.thnkscj.socket.common.util.annotation.Side;
-import com.thnkscj.socket.common.util.annotation.SideOnly;
+import com.thnkscj.socket.common.event.annotation.Side;
+import com.thnkscj.socket.common.event.annotation.SideOnly;
 
 /**
  * Gets fired when the client disconnects from the server. (Usually because of a disconnect or server shutdown)

@@ -1,161 +1,114 @@
 package com.thnkscj.socket.common.util.bytes;
 
-import org.boon.primitive.ByteBuf;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-/**
- * A class that allows you to write to a {@link ByteBuf}.
- */
-@SuppressWarnings("unused")
 public class WritingByteBuffer {
-    /**
-     * The {@link ByteBuf} that is being written to.
-     */
-    private final ByteBuf byteBuf;
 
-    /**
-     * Creates a new {@link WritingByteBuffer} with the given {@link ByteBuf}.
-     */
+    private byte[] buffer;
+
+    private int size;
+
     public WritingByteBuffer() {
-        this.byteBuf = ByteBuf.create(0);
+        this.buffer = new byte[16];
+        this.size = 0;
     }
 
-    /**
-     * Checks if the given object is null.
-     */
-    private static boolean isNull(final Object input) {
-        return input == null;
-    }
-
-    /**
-     * Writes a boolean to the {@link ByteBuf}.
-     *
-     * @param value A boolean.
-     */
     public void writeBoolean(final boolean value) {
-        byteBuf.addByte(value ? 1 : 0);
+        writeByte(value ? (byte) 1 : 0);
     }
 
-    /**
-     * Writes a byte to the {@link ByteBuf}.
-     *
-     * @param value A byte.
-     */
     public void writeByte(final byte value) {
-        byteBuf.add(value);
+        writeRaw(new byte[]{value});
     }
 
-    /**
-     * Writes a short to the {@link ByteBuf}.
-     *
-     * @param value A short.
-     */
     public void writeShort(final short value) {
-        byteBuf.add(value);
+        put(2, b -> b.putShort(value));
     }
 
-    /**
-     * Writes an int to the {@link ByteBuf}.
-     *
-     * @param value An int.
-     */
     public void writeInt(final int value) {
-        byteBuf.add(value);
+        put(4, b -> b.putInt(value));
     }
 
-    /**
-     * Writes a long to the {@link ByteBuf}.
-     *
-     * @param value A long.
-     */
     public void writeLong(final long value) {
-        byteBuf.add(value);
+        put(8, b -> b.putLong(value));
     }
 
-    /**
-     * Writes a float to the {@link ByteBuf}.
-     *
-     * @param value A float.
-     */
     public void writeFloat(final float value) {
-        byteBuf.add(value);
+        put(4, b -> b.putFloat(value));
     }
 
-    /**
-     * Writes a double to the {@link ByteBuf}.
-     *
-     * @param value A double.
-     */
-    public void writeDouble(final double value) {
-        byteBuf.add(value);
+    public void writeDouble(final float value) {
+        put(8, b -> b.putDouble(value));
     }
 
-    /**
-     * Writes a char to the {@link ByteBuf}.
-     *
-     * @param value A char.
-     */
     public void writeChar(final char value) {
         writeByte((byte) value);
     }
 
-    /**
-     * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
-     *
-     * @param value A {@link ByteBuffer}.
-     */
     public void writeString(final String value) {
-        if (isNull(value)) return;
+        if (checkVal(value)) return;
 
         final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         writeBytes(bytes);
     }
 
-    /**
-     * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
-     *
-     * @param value A {@link ByteBuffer}.
-     */
     public void writeStringArray(final String[] value) {
-        if (isNull(value)) return;
+        if (checkVal(value)) return;
 
         writeInt(value.length);
         for (final String s : value)
             writeString(s);
     }
 
-    /**
-     * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
-     *
-     * @param value A {@link ByteBuffer}.
-     */
     public void writeBytes(final byte[] value) {
-        if (isNull(value)) return;
+        if (checkVal(value)) return;
 
         writeInt(value.length);
-        byteBuf.add(value);
+        writeRaw(value);
     }
 
-    /**
-     * Writes a {@link ByteBuffer} to the {@link ByteBuf}.
-     *
-     * @param value A {@link ByteBuffer}.
-     */
     public void writeUUID(final UUID value) {
-        if (isNull(value)) return;
+        if (checkVal(value)) return;
 
         writeString(value.toString());
     }
 
-    /**
-     * Transforms the {@link ByteBuf} into a byte array. This is the final step in the writing process.
-     *
-     * @return A byte array.
-     */
     public byte[] toBytes() {
-        return byteBuf.toBytes();
+        return Arrays.copyOf(buffer, buffer.length);
+    }
+
+    /**
+     * Internal methods
+     */
+
+    private void put(int len, Consumer<ByteBuffer> consumer) {
+        writeRaw(makeBytes(len, consumer));
+    }
+
+    private byte[] makeBytes(int len, Consumer<ByteBuffer> consumer) {
+        ByteBuffer buf = ByteBuffer.allocate(len);
+        consumer.accept(buf);
+        buf.flip();
+        return buf.array();
+    }
+
+    private void writeRaw(final byte[] value) {
+        if (size + value.length >= buffer.length - 1) {
+            int grow1 = (int) Math.ceil(buffer.length * 1.5);
+            int grow2 = buffer.length + value.length + 8;
+            byte[] newBuffer = new byte[Math.max(grow1, grow2)];
+            System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+            buffer = newBuffer;
+        }
+        System.arraycopy(value, 0, buffer, size, value.length);
+        size += value.length;
+    }
+
+    private static boolean checkVal(Object val) {
+        return val == null;
     }
 }

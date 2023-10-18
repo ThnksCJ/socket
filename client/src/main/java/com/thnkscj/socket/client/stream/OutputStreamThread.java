@@ -75,6 +75,11 @@ public class OutputStreamThread {
      * @throws IOException if an I/O error occurs when creating the output stream
      */
     public void run() throws IOException {
+        if (this.socket == null) {
+            LOGGER.error("Socket is null");
+            return;
+        }
+
         finalOutputStream = this.socket.getOutputStream();
 
         this.timer.scheduleAtFixedRate(new TimerTask() {

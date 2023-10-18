@@ -4,6 +4,7 @@ import com.thnkscj.socket.client.event.ClientEventBus;
 import com.thnkscj.socket.client.event.events.EventClientConnect;
 import com.thnkscj.socket.client.event.events.EventPacket;
 import com.thnkscj.socket.client.event.events.EventServerDisconnect;
+import com.thnkscj.socket.client.event.events.EventServerReachable;
 import com.thnkscj.socket.client.network.Client;
 import com.thnkscj.socket.client.packets.client.CPacketDisconnect;
 import com.thnkscj.socket.client.packets.client.CPacketPing;
@@ -44,6 +45,17 @@ public class MainClient {
                 client.send(new CPacketPing(System.currentTimeMillis()));
             }
         }, 0, 1500);
+    }
+
+    @Subscribe
+    public static void onServerReachable(EventServerReachable event) {
+        client.LOGGER.info("Server is reachable, attempting to connect...");
+        try {
+            client.destroy();
+            client.connect();
+        } catch (IOException e) {
+            client.LOGGER.error("Error while connecting to server", e.getCause().getMessage());
+        }
     }
 
     @Subscribe

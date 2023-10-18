@@ -72,6 +72,11 @@ public class InputStreamThread {
      * @throws IOException if an I/O error occurs when creating the input stream
      */
     public void run() throws IOException {
+        if (this.socket == null) {
+            LOGGER.error("Socket is null");
+            return;
+        }
+
         this.finalInputStream = this.socket.getInputStream();
 
         final long[] start = {0L};

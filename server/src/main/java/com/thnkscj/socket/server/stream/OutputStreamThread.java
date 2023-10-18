@@ -92,9 +92,7 @@ public class OutputStreamThread {
                                 return;
                             }
 
-                            EventPacket.Send event = new EventPacket.Send(packet);
-
-                            ServerEventBus.EVENT_BUS.post(event);
+                            ServerEventBus.EVENT_BUS.post(new EventPacket.Send(packet));
 
                             writingByteBuffer.writeInt(packetId);
 

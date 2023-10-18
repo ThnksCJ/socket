@@ -95,13 +95,11 @@ public class InputStreamThread {
                             final int packetId = readingByteBuffer.readInt();
                             final Class<? extends Packet> packet = PacketRegistry.get(packetId);
 
-                            Packet thePacket = packet.getConstructor().newInstance();
-
-                            EventPacket.Receive event = new EventPacket.Receive(thePacket);
+                            final Packet thePacket = packet.getConstructor().newInstance();
 
                             thePacket.receive(readingByteBuffer, client);
 
-                            ServerEventBus.EVENT_BUS.post(event);
+                            ServerEventBus.EVENT_BUS.post(new EventPacket.Receive(thePacket));
                         } else {
                             socket.close();
                         }

@@ -8,6 +8,7 @@ import com.thnkscj.socket.client.event.events.EventServerReachable;
 import com.thnkscj.socket.client.network.Client;
 import com.thnkscj.socket.client.packets.client.CPacketDisconnect;
 import com.thnkscj.socket.client.packets.client.CPacketPing;
+import com.thnkscj.socket.client.watchdog.Watchdog;
 import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
 import org.cubic.esys.Subscribe;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@SuppressWarnings("unused")
 public class MainClient {
     public static long ping = 0;
     private static Client client;
@@ -52,8 +54,9 @@ public class MainClient {
         client.LOGGER.info("Server is reachable, attempting to connect...");
         try {
             client.destroy();
+            Thread.sleep(2000);
             client.connect();
-        } catch (IOException e) {
+        } catch (Exception e) {
             client.LOGGER.error("Error while connecting to server", e.getCause().getMessage());
         }
     }
@@ -68,6 +71,7 @@ public class MainClient {
     @Subscribe
     public static void onServerDisconnect(EventServerDisconnect event) {
         client.LOGGER.info("Disconnected from server, Reason: " + event.getReason());
+        Watchdog.startWatchdog(client.getHost(), client.getPort());
     }
 
     @Subscribe

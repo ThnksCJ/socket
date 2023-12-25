@@ -64,7 +64,6 @@ public class ServerSocketAcceptingThread extends Thread {
      */
     @Override
     public void run() {
-        super.run();
         try {
             while (true) {
                 if (this.serverSocket.isClosed()) {

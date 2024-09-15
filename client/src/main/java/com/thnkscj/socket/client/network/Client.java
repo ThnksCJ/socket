@@ -96,8 +96,14 @@ public class Client extends Connection {
         ClientEventBus.EVENT_BUS.post(new EventClientConnect(this));
 
         if (this.socket == null) {
-            this.socket = new Socket(this.hostname, this.port);
-            this.socket.setKeepAlive(true);
+            try {
+                this.socket = new Socket(this.hostname, this.port);
+                this.socket.setKeepAlive(true);
+            } catch (IOException e) {
+                LOGGER.error("Error while connecting to server", e.getMessage());
+            }
+        } else {
+            LOGGER.warn("Socket is already initialized!");
         }
 
         this.inputStreamThread = new InputStreamThread(this);
@@ -119,6 +125,17 @@ public class Client extends Connection {
         }
     }
 
+    public void destroy() throws IOException {
+        this.inputStreamThread.interrupt();
+        this.outputStreamThread.interrupt();
+
+        if (!this.socket.isClosed()) {
+            this.socket.close();
+        }
+
+        this.socket = null;
+    }
+
     /**
      * Sends a packet.
      *
@@ -129,5 +146,13 @@ public class Client extends Connection {
             return;
 
         this.outputStreamThread.send(packet);
+    }
+
+    public String getHost() {
+        return hostname;
+    }
+
+    public int getPort() {
+        return port;
     }
 }

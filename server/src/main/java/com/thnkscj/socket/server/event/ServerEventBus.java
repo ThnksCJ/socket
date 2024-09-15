@@ -1,7 +1,7 @@
 package com.thnkscj.socket.server.event;
 
-import org.cubic.esys.EventBus;
-import org.cubic.esys.EventDispatcher;
+import com.thnkscj.skyliner.EventBus;
+import com.thnkscj.skyliner.EventDispatcher;
 
 /**
  * This class should only be called from the server itself.

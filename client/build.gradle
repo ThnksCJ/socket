@@ -5,12 +5,6 @@ plugins {
 group 'com.thnkscj.socket'
 version '1.0.0'
 
-repositories {
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-
 dependencies {
     implementation project(':common')
-    implementation 'com.github.Cuubicc:Esys:6bcfb97669'
 }

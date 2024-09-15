@@ -1,4 +1,4 @@
-package com.thnkscj.socket.common.packet.packets;
+package com.thnkscj.socket.common.packet.packets.conn;
 
 import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
@@ -13,13 +13,13 @@ import static com.thnkscj.socket.common.util.Reflection.registerPackets;
  * Server packet that tells the client what packets it can send to the server.
  */
 @SuppressWarnings("unused")
-public class SPacketRequestExchange extends Packet {
+public class NPacketRegister extends Packet {
     private String[] packetList;
 
-    public SPacketRequestExchange() {
+    public NPacketRegister() {
     }
 
-    public SPacketRequestExchange(String[] packetList) {
+    public NPacketRegister(String[] packetList) {
         this.packetList = packetList;
     }
 
@@ -33,8 +33,7 @@ public class SPacketRequestExchange extends Packet {
         packetList = readingByteBuffer.readStringArray();
 
         Arrays.stream(packetList).forEach(packetName -> {
-            registerPackets(packetName, "com.thnkscj.socket.client.packets.client");
-            registerPackets(packetName, "com.thnkscj.socket.client.packets.server");
+            registerPackets(packetName, "com.thnkscj.socket.client.packets");
         });
 
         LOGGER.info("Received packet list from server: " + Arrays.toString(packetList));

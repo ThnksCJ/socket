@@ -70,9 +70,6 @@ public class InputStreamThread {
     public void run() throws IOException {
         this.finalInputStream = this.socket.getInputStream();
 
-        final long[] start = {0L};
-        long threshold = 5000;
-
         this.timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -93,6 +90,7 @@ public class InputStreamThread {
 
                             final ReadingByteBuffer readingByteBuffer = new ReadingByteBuffer(bytes.get());
                             final int packetId = readingByteBuffer.readInt();
+
                             final Class<? extends Packet> packet = PacketRegistry.get(packetId);
 
                             final Packet thePacket = packet.getConstructor().newInstance();
@@ -104,28 +102,6 @@ public class InputStreamThread {
                             socket.close();
                         }
                     }
-
-                    /*
-                    This is broken right now as we never update the start[0], should probably create a
-                    packet handler for this type of thing but hey ho
-
-                    if (client.isServer() && start[0] == 0) {
-                        start[0] = System.currentTimeMillis();
-                    }
-
-                    if (((System.currentTimeMillis() - start[0]) > threshold) && client.isServer()) {
-                        Client offender = ServerSocketAcceptingThread.getClient(client.getConnectionUUID().get());
-
-                        if (offender == null) {
-                            interrupt();
-                            return;
-                        }
-
-                        ServerEventBus.EVENT_BUS.post(new EventClientDisconnect(offender));
-                        interrupt();
-                    }
-
-                     */
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
                                IllegalAccessException exception) {
                     LOGGER.error(exception.getMessage());

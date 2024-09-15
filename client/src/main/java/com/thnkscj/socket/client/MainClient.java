@@ -2,13 +2,11 @@ package com.thnkscj.socket.client;
 
 import com.thnkscj.socket.client.event.ClientEventBus;
 import com.thnkscj.socket.client.event.events.EventClientConnect;
-import com.thnkscj.socket.client.event.events.EventPacket;
 import com.thnkscj.socket.client.event.events.EventServerDisconnect;
 import com.thnkscj.socket.client.network.Client;
 import com.thnkscj.socket.client.packets.client.CPacketDisconnect;
 import com.thnkscj.socket.client.packets.client.CPacketPing;
-import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
-import org.cubic.esys.Subscribe;
+import com.thnkscj.skyliner.Subscribe;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -44,13 +42,6 @@ public class MainClient {
                 client.send(new CPacketPing(System.currentTimeMillis()));
             }
         }, 0, 1500);
-    }
-
-    @Subscribe
-    public static void onPacket(EventPacket.Receive event) {
-        if (event.getPacket() instanceof SPacketRequestExchange) {
-            client.setHasExchangePacket(true);
-        }
     }
 
     @Subscribe

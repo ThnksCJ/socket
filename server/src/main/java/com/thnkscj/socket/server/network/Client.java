@@ -2,6 +2,8 @@ package com.thnkscj.socket.server.network;
 
 import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
+import com.thnkscj.socket.common.packet.PacketRegistry;
+import com.thnkscj.socket.common.packet.packets.conn.NPacketRegister;
 import com.thnkscj.socket.common.util.Logger;
 import com.thnkscj.socket.server.event.ServerEventBus;
 import com.thnkscj.socket.server.event.events.EventClientConnect;
@@ -63,6 +65,8 @@ public class Client extends Connection {
         this.inputStreamThread.run();
         this.outputStreamThread = new OutputStreamThread(this);
         this.outputStreamThread.run();
+
+        send(new NPacketRegister(PacketRegistry.getRegisteredPacketNames().toArray(new String[0])));
     }
 
     /**

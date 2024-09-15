@@ -9,15 +9,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-repositories {
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-    implementation 'com.github.Cuubicc:Esys:6bcfb97669'
-}
-
 jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

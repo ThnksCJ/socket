@@ -8,7 +8,7 @@ import com.thnkscj.socket.server.network.Server;
 import com.thnkscj.socket.server.packets.client.CPacketDisconnect;
 import com.thnkscj.socket.server.packets.client.CPacketPing;
 import com.thnkscj.socket.server.packets.server.SPacketPong;
-import org.cubic.esys.Subscribe;
+import com.thnkscj.skyliner.Subscribe;
 
 import java.io.IOException;
 import java.util.Arrays;

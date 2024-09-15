@@ -4,8 +4,11 @@ import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.packet.PacketRegistry;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,15 +26,60 @@ public class Reflection {
      * @param packageName the package name they reside in
      */
     public static void registerPackets(String packetName, String packageName) {
-        findAllClassesUsingClassLoader(packageName).forEach(clazz -> {
+        findAllClasses(packageName).forEach(clazz -> {
             if (Packet.class.isAssignableFrom(clazz)) {
-                if (clazz.getSimpleName().equals(packetName)) {
+                if (PacketRegistry.getPacketName((Class<? extends Packet>) clazz).equals(packetName)) {
                     PacketRegistry.registerPacket(ObjectUtil.unsafeCast(clazz));
                 }
             } else {
                 LOGGER.error(String.format("\"%s\" is not a subclass of Packet.class", packetName));
             }
         });
+    }
+
+    /**
+     * Find all classes in the package and its sub-packages
+     *
+     * @param packageName the package name
+     * @return a set of classes
+     */
+    public static Set<Class<?>> findAllClasses(String packageName) {
+        Set<Class<?>> classes = new HashSet<>();
+        URL packageURL = ClassLoader.getSystemClassLoader().getResource(packageName.replace('.', '/'));
+
+        if (packageURL != null) {
+            File directory = new File(packageURL.getFile());
+            if (directory.exists()) {
+                findClassesInDirectory(directory, packageName, classes);
+            }
+        }
+
+        return classes;
+    }
+
+    /**
+     * Recursively find classes in a directory
+     *
+     * @param directory  the directory to scan
+     * @param packageName the package name
+     * @param classes    the set of found classes
+     */
+    private static void findClassesInDirectory(File directory, String packageName, Set<Class<?>> classes) {
+        File[] files = directory.listFiles();
+        if (files == null) return;
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                findClassesInDirectory(file, packageName + "." + file.getName(), classes);
+            } else if (file.getName().endsWith(".class")) {
+                String className = file.getName().substring(0, file.getName().length() - 6);
+                try {
+                    classes.add(Class.forName(packageName + '.' + className));
+                } catch (ClassNotFoundException e) {
+                    System.err.printf("Class \"%s\" not found%n", packageName + '.' + className);
+                }
+            }
+        }
     }
 
     /**

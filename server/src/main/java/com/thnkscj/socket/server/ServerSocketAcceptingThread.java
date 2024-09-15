@@ -1,8 +1,7 @@
 package com.thnkscj.socket.server;
 
 import com.thnkscj.socket.common.packet.Packet;
-import com.thnkscj.socket.common.packet.PacketRegistry;
-import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
+import com.thnkscj.socket.common.packet.packets.conn.NPacketRegister;
 import com.thnkscj.socket.common.util.Logger;
 import com.thnkscj.socket.server.network.Client;
 
@@ -60,7 +59,7 @@ public class ServerSocketAcceptingThread extends Thread {
     }
 
     /**
-     * This handles the accepting of new clients and sending {@link SPacketRequestExchange} to them.
+     * This handles the accepting of new clients and sending {@link NPacketRegister} to them.
      */
     @Override
     public void run() {
@@ -75,8 +74,6 @@ public class ServerSocketAcceptingThread extends Thread {
                     final Client client = new Client(socket);
                     client.connect();
                     clients.add(client);
-
-                    client.send(new SPacketRequestExchange(PacketRegistry.getRegisteredPackets().stream().map(Class::getSimpleName).toArray(String[]::new)));
                 }
             }
         } catch (final IOException exception) {

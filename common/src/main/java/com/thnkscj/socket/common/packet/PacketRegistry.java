@@ -1,6 +1,6 @@
 package com.thnkscj.socket.common.packet;
 
-import com.thnkscj.socket.common.packet.packets.SPacketRequestExchange;
+import com.thnkscj.socket.common.packet.packets.conn.NPacketRegister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class PacketRegistry {
     private static final List<Class<? extends Packet>> registeredPackets = new ArrayList<>();
 
     static {
-        registerPacket(SPacketRequestExchange.class);
+        registerPacket(NPacketRegister.class);
     }
 
     /**
@@ -64,5 +64,19 @@ public class PacketRegistry {
      */
     public static List<Class<? extends Packet>> getRegisteredPackets() {
         return PacketRegistry.registeredPackets;
+    }
+
+    public static List<String> getRegisteredPacketNames() {
+        List<String> packetNames = new ArrayList<>();
+        for (Class<? extends Packet> packetClass : PacketRegistry.registeredPackets) {
+            packetNames.add(getPacketName(packetClass));
+        }
+        return packetNames;
+    }
+
+    public static String getPacketName(Class<? extends Packet> packetClass) {
+        String packetName = packetClass.getSimpleName();
+        String packetHeader = packetClass.getPackageName().split("\\.")[packetClass.getPackageName().split("\\.").length - 1];
+        return packetHeader + "." + packetName;
     }
 }

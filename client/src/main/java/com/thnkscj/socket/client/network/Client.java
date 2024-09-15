@@ -2,11 +2,13 @@ package com.thnkscj.socket.client.network;
 
 import com.thnkscj.socket.client.event.ClientEventBus;
 import com.thnkscj.socket.client.event.events.EventClientConnect;
+import com.thnkscj.socket.client.event.events.EventPacket;
 import com.thnkscj.socket.client.stream.InputStreamThread;
 import com.thnkscj.socket.client.stream.OutputStreamThread;
 import com.thnkscj.socket.common.Connection;
 import com.thnkscj.socket.common.packet.Packet;
 import com.thnkscj.socket.common.util.Logger;
+import com.thnkscj.skyliner.Subscribe;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -46,11 +48,6 @@ public class Client extends Connection {
     private OutputStreamThread outputStreamThread;
 
     /**
-     * Whether this client has received an exchange packet. (Client only, stops the client from sending packets before the server has sent an exchange packet)
-     */
-    private boolean hasExchangePacket = false;
-
-    /**
      * Creates a new client.
      *
      * @param hostname The hostname to connect to.
@@ -59,6 +56,8 @@ public class Client extends Connection {
     public Client(final String hostname, final int port) {
         this.hostname = hostname;
         this.port = port;
+
+        ClientEventBus.EVENT_BUS.subscribe(this);
     }
 
     /**
@@ -68,24 +67,6 @@ public class Client extends Connection {
      */
     public Socket getSocket() {
         return this.socket;
-    }
-
-    /**
-     * Gets the hostname.
-     *
-     * @return The hostname.
-     */
-    public boolean hasExchangePacket() {
-        return hasExchangePacket;
-    }
-
-    /**
-     * Sets whether this client has received an exchange packet.
-     *
-     * @param hasExchangePacket Whether this client has received an exchange packet.
-     */
-    public void setHasExchangePacket(boolean hasExchangePacket) {
-        this.hasExchangePacket = hasExchangePacket;
     }
 
     /**
@@ -125,9 +106,11 @@ public class Client extends Connection {
      * @param packet The packet to send.
      */
     public void send(final Packet packet) {
-        if (!this.hasExchangePacket)
-            return;
-
         this.outputStreamThread.send(packet);
+    }
+
+    @Subscribe
+    public void onPacketReceive(EventPacket.Receive event) {
+
     }
 }
